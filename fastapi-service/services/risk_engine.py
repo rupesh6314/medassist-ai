@@ -12,8 +12,13 @@ import joblib
 
 from services.clinical_formulas import ClinicalFormulas
 
-MODELS_DIR = Path(__file__).resolve().parent.parent.parent / "ml" / "heart" / "models"
-METRICS_PATH = Path(__file__).resolve().parent.parent.parent / "ml" / "heart" / "results" / "metrics.json"
+# Resolves either from repo root or inside Docker container where ml is at /app/ml
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+if not (BASE_DIR / "ml").exists():
+    BASE_DIR = Path("/app")
+
+MODELS_DIR = BASE_DIR / "ml" / "heart" / "models"
+METRICS_PATH = BASE_DIR / "ml" / "heart" / "results" / "metrics.json"
 
 _XGB_MODEL = None
 _XGB_SCALER = None
