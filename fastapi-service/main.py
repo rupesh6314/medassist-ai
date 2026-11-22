@@ -23,8 +23,9 @@ from services.model_status_service import ModelStatusService
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Preload AI models and IFCT food dataset in background
-    asyncio.create_task(ModelStatusService.preload_models())
+    # Only load the lightweight IFCT food database into memory on startup.
+    # ML models are loaded on-demand (lazy-loaded) when a prediction endpoint is called,
+    # preventing high memory spikes during container startup on 512MB free-tier instances.
     loop = asyncio.get_running_loop()
     await loop.run_in_executor(None, load_local_ifct_foods)
     yield
