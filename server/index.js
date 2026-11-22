@@ -33,6 +33,9 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Enable 'trust proxy' so express-rate-limit correctly handles Render reverse proxy headers
+app.set('trust proxy', 1);
+
 // Security Headers with Helmet
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }

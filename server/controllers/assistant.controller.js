@@ -27,10 +27,10 @@ async function fetchUserContext(user, userMessage) {
     // 1. Appointments Today & Upcoming
     const apptRes = await query(
       `SELECT a.id, a.patient_id as "patientId", u.name as "patientName", u.patient_id as "patientCode",
-              a.appointment_date as "date", a.appointment_time as "time", a.type, a.status, a.reason
+              a.appointment_date as "date", a.appointment_time as "time", a.appointment_type as "type", a.appointment_status as "status", a.reason
        FROM appointments a
        JOIN users u ON a.patient_id = u.id
-       WHERE a.doctor_id = $1 AND a.status != 'cancelled'
+       WHERE a.doctor_id = $1 AND a.appointment_status != 'cancelled'
        ORDER BY a.appointment_date ASC, a.appointment_time ASC`,
       [userId]
     );
@@ -184,10 +184,10 @@ async function fetchUserContext(user, userMessage) {
   let patientAppointments = [];
   if (/appointment|consultation|booking|doctor visit|schedule/i.test(lower)) {
     const apptRes = await query(
-      `SELECT a.id, d.name as "doctorName", d.specialization, a.appointment_date as "date", a.appointment_time as "time", a.type, a.status, a.reason
+      `SELECT a.id, d.name as "doctorName", d.specialization, a.appointment_date as "date", a.appointment_time as "time", a.appointment_type as "type", a.appointment_status as "status", a.reason
        FROM appointments a
        JOIN users d ON a.doctor_id = d.id
-       WHERE a.patient_id = $1 AND a.status != 'cancelled'
+       WHERE a.patient_id = $1 AND a.appointment_status != 'cancelled'
        ORDER BY a.appointment_date ASC, a.appointment_time ASC
        LIMIT 5`,
       [userId]
