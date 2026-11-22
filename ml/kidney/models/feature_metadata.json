@@ -1,0 +1,215 @@
+{
+    "model_name": "Random Forest",
+    "model_version": "kidney_rf_v1",
+    "dataset_name": "kidney_disease.csv",
+    "target_column": "has_ckd",
+    "raw_features": [
+        "age",
+        "bp",
+        "sg",
+        "al",
+        "su",
+        "rbc",
+        "pc",
+        "pcc",
+        "ba",
+        "bgr",
+        "bu",
+        "sc",
+        "sod",
+        "pot",
+        "hemo",
+        "pcv",
+        "wc",
+        "rc",
+        "htn",
+        "dm",
+        "cad",
+        "appet",
+        "pe",
+        "ane"
+    ],
+    "transformed_features": [
+        "age",
+        "bp",
+        "sg",
+        "al",
+        "su",
+        "bgr",
+        "bu",
+        "sc",
+        "sod",
+        "pot",
+        "hemo",
+        "pcv",
+        "wc",
+        "rc",
+        "rbc_abnormal",
+        "rbc_normal",
+        "pc_abnormal",
+        "pc_normal",
+        "pcc_notpresent",
+        "pcc_present",
+        "ba_notpresent",
+        "ba_present",
+        "htn_no",
+        "htn_yes",
+        "dm_no",
+        "dm_yes",
+        "cad_no",
+        "cad_yes",
+        "appet_good",
+        "appet_poor",
+        "pe_no",
+        "pe_yes",
+        "ane_no",
+        "ane_yes"
+    ],
+    "sampling_method": "SMOTE",
+    "test_size": 0.2,
+    "random_state": 42,
+    "n_estimators": 200,
+    "training_samples_after_smote": 400,
+    "test_samples": 80,
+    "evaluation_accuracy": 1.0,
+    "evaluation_f1": 1.0,
+    "evaluation_auc": 1.0,
+    "feature_importances": [
+        {
+            "feature": "hemo",
+            "importance": 0.1992
+        },
+        {
+            "feature": "pcv",
+            "importance": 0.1515
+        },
+        {
+            "feature": "sc",
+            "importance": 0.1221
+        },
+        {
+            "feature": "sg",
+            "importance": 0.1037
+        },
+        {
+            "feature": "rc",
+            "importance": 0.0905
+        },
+        {
+            "feature": "htn_no",
+            "importance": 0.0558
+        },
+        {
+            "feature": "al",
+            "importance": 0.0476
+        },
+        {
+            "feature": "htn_yes",
+            "importance": 0.036
+        },
+        {
+            "feature": "bu",
+            "importance": 0.0352
+        },
+        {
+            "feature": "dm_no",
+            "importance": 0.0292
+        },
+        {
+            "feature": "dm_yes",
+            "importance": 0.024
+        },
+        {
+            "feature": "bgr",
+            "importance": 0.0186
+        },
+        {
+            "feature": "sod",
+            "importance": 0.015
+        },
+        {
+            "feature": "pc_normal",
+            "importance": 0.0102
+        },
+        {
+            "feature": "bp",
+            "importance": 0.0082
+        },
+        {
+            "feature": "pc_abnormal",
+            "importance": 0.0069
+        },
+        {
+            "feature": "appet_good",
+            "importance": 0.0066
+        },
+        {
+            "feature": "age",
+            "importance": 0.0054
+        },
+        {
+            "feature": "pot",
+            "importance": 0.005
+        },
+        {
+            "feature": "wc",
+            "importance": 0.005
+        },
+        {
+            "feature": "rbc_abnormal",
+            "importance": 0.0039
+        },
+        {
+            "feature": "pe_yes",
+            "importance": 0.0039
+        },
+        {
+            "feature": "appet_poor",
+            "importance": 0.0038
+        },
+        {
+            "feature": "pe_no",
+            "importance": 0.0035
+        },
+        {
+            "feature": "su",
+            "importance": 0.003
+        },
+        {
+            "feature": "rbc_normal",
+            "importance": 0.0025
+        },
+        {
+            "feature": "ane_yes",
+            "importance": 0.0012
+        },
+        {
+            "feature": "pcc_present",
+            "importance": 0.0008
+        },
+        {
+            "feature": "ane_no",
+            "importance": 0.0005
+        },
+        {
+            "feature": "ba_notpresent",
+            "importance": 0.0004
+        },
+        {
+            "feature": "ba_present",
+            "importance": 0.0004
+        },
+        {
+            "feature": "pcc_notpresent",
+            "importance": 0.0003
+        },
+        {
+            "feature": "cad_yes",
+            "importance": 0.0
+        },
+        {
+            "feature": "cad_no",
+            "importance": 0.0
+        }
+    ]
+}

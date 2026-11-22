@@ -1,0 +1,38 @@
+{
+  "dataset": "UCI Cleveland Heart Disease",
+  "sample_count": 303,
+  "train_samples": 211,
+  "val_samples": 46,
+  "test_samples": 46,
+  "scale_pos_weight": 1.1753,
+  "test_accuracy": 0.8913,
+  "test_precision": 0.8636,
+  "test_recall": 0.9048,
+  "test_f1": 0.8837,
+  "test_roc_auc": 0.9352,
+  "test_confusion_matrix": [
+    [
+      22,
+      3
+    ],
+    [
+      2,
+      19
+    ]
+  ],
+  "features": [
+    "age",
+    "sex",
+    "cp",
+    "trestbps",
+    "chol",
+    "fbs",
+    "restecg",
+    "thalach",
+    "exang",
+    "oldpeak",
+    "slope",
+    "ca",
+    "thal"
+  ]
+}

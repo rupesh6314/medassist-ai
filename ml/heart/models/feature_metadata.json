@@ -1,0 +1,105 @@
+{
+    "model_name": "Random Forest",
+    "model_version": "heart_rf_v1",
+    "dataset_name": "framingham.csv",
+    "target_column": "TenYearCHD",
+    "raw_features": [
+        "male",
+        "age",
+        "currentSmoker",
+        "cigsPerDay",
+        "BPMeds",
+        "prevalentStroke",
+        "prevalentHyp",
+        "diabetes",
+        "totChol",
+        "sysBP",
+        "diaBP",
+        "BMI",
+        "heartRate",
+        "glucose"
+    ],
+    "transformed_features": [
+        "male",
+        "age",
+        "currentSmoker",
+        "cigsPerDay",
+        "BPMeds",
+        "prevalentStroke",
+        "prevalentHyp",
+        "diabetes",
+        "totChol",
+        "sysBP",
+        "diaBP",
+        "BMI",
+        "heartRate",
+        "glucose"
+    ],
+    "sampling_method": "SMOTE",
+    "test_size": 0.2,
+    "random_state": 42,
+    "n_estimators": 200,
+    "training_samples_after_smote": 5754,
+    "test_samples": 848,
+    "evaluation_accuracy": 0.7924528301886793,
+    "evaluation_f1": 0.26666666666666666,
+    "evaluation_auc": 0.6426723162014425,
+    "feature_importances": [
+        {
+            "feature": "age",
+            "importance": 0.195
+        },
+        {
+            "feature": "sysBP",
+            "importance": 0.1246
+        },
+        {
+            "feature": "diaBP",
+            "importance": 0.1108
+        },
+        {
+            "feature": "totChol",
+            "importance": 0.1082
+        },
+        {
+            "feature": "heartRate",
+            "importance": 0.1082
+        },
+        {
+            "feature": "BMI",
+            "importance": 0.1022
+        },
+        {
+            "feature": "glucose",
+            "importance": 0.1016
+        },
+        {
+            "feature": "cigsPerDay",
+            "importance": 0.063
+        },
+        {
+            "feature": "prevalentHyp",
+            "importance": 0.0287
+        },
+        {
+            "feature": "male",
+            "importance": 0.0278
+        },
+        {
+            "feature": "currentSmoker",
+            "importance": 0.0144
+        },
+        {
+            "feature": "BPMeds",
+            "importance": 0.007
+        },
+        {
+            "feature": "diabetes",
+            "importance": 0.0065
+        },
+        {
+            "feature": "prevalentStroke",
+            "importance": 0.0018
+        }
+    ]
+}
