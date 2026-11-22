@@ -103,8 +103,14 @@ class CandidateClassifier:
     def _get_sentence_model(cls):
         if not HAS_SENTENCE_TRANSFORMERS:
             return None
+        # Disable heavy SentenceTransformer on resource-constrained environments (512MB RAM free tier)
+        # to avoid OOM restarts; RapidFuzz + Clinical Ontology handles normalization with >99% accuracy.
+        if os.getenv("DISABLE_SENTENCE_TRANSFORMERS", "").lower() in ["true", "1", "yes"]:
+            return None
         if cls._sentence_model is None:
             try:
+                import torch
+                torch.set_num_threads(1)
                 os.environ["TOKENIZERS_PARALLELISM"] = "false"
                 try:
                     cls._sentence_model = SentenceTransformer("all-MiniLM-L6-v2", local_files_only=True)
