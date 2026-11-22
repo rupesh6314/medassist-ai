@@ -81,9 +81,26 @@ function wrapHtmlEmail({ title, preheader, contentHtml, actionButton }) {
 }
 
 /**
- * Generic send mail function
+ * Generic send mail function with opt-out checks
  */
-async function sendMail({ to, subject, text, html }) {
+async function sendMail({ to, subject, text, html, userId }) {
+  // If a userId is supplied, check user_settings.email_alerts before sending
+  if (userId) {
+    try {
+      const { query } = require('../config/db');
+      const settingsRes = await query(
+        'SELECT email_alerts FROM user_settings WHERE user_id = $1',
+        [userId]
+      );
+      if (settingsRes.rows.length > 0 && settingsRes.rows[0].email_alerts === false) {
+        console.log(`[Email Service] Suppressed email to ${to} (User ID ${userId} has disabled email notifications).`);
+        return { success: false, suppressed: true, reason: 'user_opted_out' };
+      }
+    } catch (checkErr) {
+      console.warn('[Email Service] Error checking user email preferences:', checkErr.message);
+    }
+  }
+
   try {
     const info = await transporter.sendMail({
       from: DEFAULT_FROM,
@@ -103,7 +120,7 @@ async function sendMail({ to, subject, text, html }) {
 /**
  * 1. Send Report Analysis Ready Notification
  */
-async function sendReportAnalyzedEmail({ to, patientName, reportType, reportDate, abnormalCount, reportId }) {
+async function sendReportAnalyzedEmail({ to, patientName, reportType, reportDate, abnormalCount, reportId, userId }) {
   const appUrl = process.env.APP_URL || 'http://localhost:5173';
   const reportUrl = `${appUrl}/reports`;
 
@@ -131,6 +148,7 @@ async function sendReportAnalyzedEmail({ to, patientName, reportType, reportDate
 
   return sendMail({
     to,
+    userId,
     subject: `Medical Report Analyzed — ${reportType || 'Clinical Findings'}`,
     text: `Your report has been analyzed with ${abnormalCount} abnormal markers. Log in at ${reportUrl} to view your results.`,
     html: wrapHtmlEmail({

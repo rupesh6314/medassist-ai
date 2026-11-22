@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Sun, Moon, Monitor, Lock, Mail, CheckCircle2, Loader2, Send } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Sun, Moon, Monitor, Lock, Mail, CheckCircle2, Loader2, Send, AlertTriangle } from 'lucide-react'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
@@ -34,6 +34,30 @@ export default function SettingsPage() {
   const [dataSharing, setDataSharing] = useState(true)
   const [sendingTestEmail, setSendingTestEmail] = useState(false)
   const [emailNotifications, setEmailNotifications] = useState(true)
+  const [confirmDiscontinueModal, setConfirmDiscontinueModal] = useState(false)
+  const [updatingSettings, setUpdatingSettings] = useState(false)
+
+  useEffect(() => {
+    // Load initial user settings
+    api.getSettings()
+      .then((res) => {
+        if (res.settings) {
+          if (res.settings.emailAlerts !== undefined) {
+            setEmailNotifications(res.settings.emailAlerts)
+          } else if (res.settings.email_alerts !== undefined) {
+            setEmailNotifications(res.settings.email_alerts)
+          }
+          if (res.settings.dataSharing !== undefined) {
+            setDataSharing(res.settings.dataSharing)
+          } else if (res.settings.data_sharing !== undefined) {
+            setDataSharing(res.settings.data_sharing)
+          }
+        }
+      })
+      .catch((err) => {
+        console.warn('Failed to load user settings:', err)
+      })
+  }, [])
 
   const handleSendTestEmail = async () => {
     setSendingTestEmail(true)
@@ -45,6 +69,43 @@ export default function SettingsPage() {
     } finally {
       setSendingTestEmail(false)
     }
+  }
+
+  const handleToggleEmail = (checked: boolean) => {
+    if (!checked) {
+      // User is turning it off -> show confirmation modal with Yes / No
+      setConfirmDiscontinueModal(true)
+    } else {
+      // User is turning it back on -> immediately activate and persist
+      setEmailNotifications(true)
+      api.updateSettings({ email_notifications: true })
+        .then(() => {
+          showToast('Email notifications enabled', 'You will receive clinical reports and updates.', 'success')
+        })
+        .catch(() => {
+          showToast('Error', 'Failed to update email preferences.', 'warning')
+        })
+    }
+  }
+
+  const handleConfirmDiscontinue = async () => {
+    setUpdatingSettings(true)
+    try {
+      await api.updateSettings({ email_notifications: false })
+      setEmailNotifications(false)
+      setConfirmDiscontinueModal(false)
+      showToast('Email notifications discontinued', 'You will not receive any emails from MedAssist.', 'info')
+    } catch (err: any) {
+      showToast('Error', 'Failed to update email preferences.', 'warning')
+    } finally {
+      setUpdatingSettings(false)
+    }
+  }
+
+  const handleCancelDiscontinue = () => {
+    // User selected "No" -> keep enabled
+    setEmailNotifications(true)
+    setConfirmDiscontinueModal(false)
   }
 
   return (
@@ -82,12 +143,53 @@ export default function SettingsPage() {
                 <Switch
                   id="email-notifications"
                   checked={emailNotifications}
-                  onCheckedChange={(v) => {
-                    setEmailNotifications(v)
-                    showToast(v ? 'Email notifications enabled' : 'Email notifications paused')
-                  }}
+                  onCheckedChange={handleToggleEmail}
                 />
               </div>
+
+              {/* Confirmation Dialog to Discontinue Emails */}
+              <Dialog open={confirmDiscontinueModal} onOpenChange={(open) => {
+                if (!open) handleCancelDiscontinue()
+              }}>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-600 mb-2">
+                      <AlertTriangle className="h-6 w-6" />
+                    </div>
+                    <DialogTitle className="text-center text-lg">Discontinue Email Notifications?</DialogTitle>
+                    <DialogDescription className="text-center text-xs text-ink-soft pt-1">
+                      Can you confirm to discontinue the email notifications? If confirmed, your profile will not receive any clinical alerts, appointment reminders, or report notifications from MedAssist.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter className="mt-4 flex flex-row items-center justify-center gap-3 sm:justify-center">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleCancelDiscontinue}
+                      disabled={updatingSettings}
+                      className="w-28 font-medium"
+                    >
+                      No
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={handleConfirmDiscontinue}
+                      disabled={updatingSettings}
+                      className="w-28 bg-red-600 hover:bg-red-700 text-white font-medium"
+                    >
+                      {updatingSettings ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                          Saving...
+                        </>
+                      ) : (
+                        'Yes'
+                      )}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
 
               <div className="pt-2 border-t border-mist-100 flex flex-wrap items-center justify-between gap-2">
                 <div className="text-[11px] text-ink-soft">

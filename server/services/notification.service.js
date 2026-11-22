@@ -22,6 +22,7 @@ const createNotification = async ({ userId, title, message, type = 'info', link 
         const u = uRes.rows[0];
         emailService.sendMail({
           to: u.email,
+          userId,
           subject: title,
           text: message,
           html: `<p>Hello <strong>${u.name || 'Patient'}</strong>,</p><p>${message}</p>`

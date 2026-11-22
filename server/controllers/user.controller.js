@@ -179,7 +179,13 @@ const getSettings = async (req, res, next) => {
 const updateSettings = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { theme, notificationsEnabled, emailAlerts, language, dataSharing } = req.body;
+    const theme = req.body.theme;
+    const notificationsEnabled = req.body.notificationsEnabled !== undefined ? req.body.notificationsEnabled : req.body.notifications_enabled;
+    const emailAlerts = req.body.emailAlerts !== undefined 
+      ? req.body.emailAlerts 
+      : (req.body.email_notifications !== undefined ? req.body.email_notifications : req.body.email_alerts);
+    const language = req.body.language;
+    const dataSharing = req.body.dataSharing !== undefined ? req.body.dataSharing : req.body.data_sharing;
 
     const result = await query(
       `INSERT INTO user_settings (user_id, theme, notifications_enabled, email_alerts, language, data_sharing)
