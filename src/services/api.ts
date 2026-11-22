@@ -590,7 +590,7 @@ export const api = {
   ) => {
     try {
       const token = getToken();
-      const res = await fetch('/api/assistant/chat/stream', {
+      const res = await fetch(`${API_BASE_URL}/assistant/chat/stream`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
