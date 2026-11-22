@@ -1,2 +1,0 @@
-# MedAssist AI — Python Dependencies (FastAPI Report Parser + Multi-Organ ML Pipeline)
--r fastapi-service/requirements.txt
