@@ -69,6 +69,16 @@ app.include_router(diet_router)
 app.include_router(risk_router)
 app.include_router(pdf_export_router)
 
+@app.get("/")
+@app.head("/")
+def root_endpoint():
+    return {
+        "service": "MedAssist AI - FastAPI Microservice",
+        "status": "online",
+        "docs": "/docs",
+        "health": "/health"
+    }
+
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
