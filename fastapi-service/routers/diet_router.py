@@ -11,12 +11,8 @@ for p in [str(PROJECT_ROOT), str(FASTAPI_ROOT)]:
     if p not in sys.path:
         sys.path.insert(0, p)
 
-try:
-    from services.diet.schemas import OptimizeDietRequest, OptimizeDietResponse
-    from services.diet.services.diet_service import DietService
-except ImportError:
-    from fastapi_service.services.diet.schemas import OptimizeDietRequest, OptimizeDietResponse
-    from fastapi_service.services.diet.services.diet_service import DietService
+from services.diet.schemas import OptimizeDietRequest, OptimizeDietResponse
+from services.diet.services.diet_service import DietService
 
 router = APIRouter(prefix="/api/v1/diet", tags=["MILP Diet Optimization Engine"])
 
