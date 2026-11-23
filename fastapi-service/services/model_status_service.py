@@ -67,9 +67,8 @@ class ModelStatusService:
 
                 # 2. Check Semantic Matching
                 try:
-                    from services.candidate_classifier import CandidateClassifier
-                    sm = CandidateClassifier._get_sentence_model()
-                    _MODEL_STATE["components"]["semantic_matching"] = "ready" if sm is not None else "unavailable"
+                    from services.candidate_classifier import HAS_RAPIDFUZZ
+                    _MODEL_STATE["components"]["semantic_matching"] = "ready" if HAS_RAPIDFUZZ else "unavailable"
                 except Exception as e:
                     logger.warning(f"Semantic matching check note: {e}")
                     _MODEL_STATE["components"]["semantic_matching"] = "unavailable"

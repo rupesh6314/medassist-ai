@@ -46,12 +46,7 @@ try:
 except ImportError:
     HAS_RAPIDFUZZ = False
 
-try:
-    from sentence_transformers import SentenceTransformer, util
-    import torch
-    HAS_SENTENCE_TRANSFORMERS = True
-except ImportError:
-    HAS_SENTENCE_TRANSFORMERS = False
+HAS_SENTENCE_TRANSFORMERS = False
 
 # Global model cache
 _SENTENCE_TRANSFORMER_MODEL = None

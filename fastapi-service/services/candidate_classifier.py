@@ -25,12 +25,7 @@ try:
 except ImportError:
     HAS_RAPIDFUZZ = False
 
-try:
-    from sentence_transformers import SentenceTransformer, util
-    import torch
-    HAS_SENTENCE_TRANSFORMERS = True
-except ImportError:
-    HAS_SENTENCE_TRANSFORMERS = False
+HAS_SENTENCE_TRANSFORMERS = None
 
 
 class CandidateCategory(str, Enum):
@@ -101,15 +96,15 @@ class CandidateClassifier:
 
     @classmethod
     def _get_sentence_model(cls):
-        if not HAS_SENTENCE_TRANSFORMERS:
-            return None
         # Disable heavy SentenceTransformer by default on cloud servers with <= 512MB RAM
         # RapidFuzz + Clinical Ontology Dictionary handles medical term normalization with >99.4% accuracy
         # without exceeding memory limits or triggering OOM restarts.
         if os.getenv("ENABLE_SENTENCE_TRANSFORMERS", "").lower() not in ["true", "1", "yes"]:
             return None
+
         if cls._sentence_model is None:
             try:
+                from sentence_transformers import SentenceTransformer
                 import torch
                 torch.set_num_threads(1)
                 os.environ["TOKENIZERS_PARALLELISM"] = "false"
