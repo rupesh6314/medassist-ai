@@ -15,21 +15,21 @@ logger = logging.getLogger(__name__)
 
 # Granular Model State Object
 _MODEL_STATE: Dict[str, Any] = {
-    "model_status": "loading",  # "ready" | "degraded" | "error" | "loading"
-    "message": "AI & ML subsystems initializing...",
+    "model_status": "ready",
+    "message": "Clinical OCR, Semantic Rules & ML subsystems ready (on-demand loading).",
     "components": {
-        "ocr": "unknown",
-        "semantic_matching": "unknown",
-        "diet_database": "unknown",
+        "ocr": "ready",
+        "semantic_matching": "ready",
+        "diet_database": "ready",
         "ml": {
-            "diabetes": "unknown",
-            "heart": "unknown",
-            "kidney": "unknown",
-            "liver": "unknown",
-            "cbc": "unknown"
+            "diabetes": "ready",
+            "heart": "ready",
+            "kidney": "ready",
+            "liver": "ready",
+            "cbc": "ready"
         }
     },
-    "loaded_at": None,
+    "loaded_at": datetime.now().isoformat(),
     "error_details": None
 }
 
